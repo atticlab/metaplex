@@ -4,7 +4,9 @@ import {
   actions,
   findProgramAddress,
   IPartialCreateAuctionArgs,
+  IPartialCreateAuctionArgsV2,
   CreateAuctionArgs,
+  CreateAuctionArgsV2,
 } from '@oyster/common';
 
 const { AUCTION_PREFIX, createAuction } = actions;
@@ -13,7 +15,7 @@ const { AUCTION_PREFIX, createAuction } = actions;
 export async function makeAuction(
   wallet: any,
   vault: PublicKey,
-  auctionSettings: IPartialCreateAuctionArgs,
+  auctionSettings: IPartialCreateAuctionArgsV2,
 ): Promise<{
   auction: PublicKey;
   instructions: TransactionInstruction[];
@@ -34,7 +36,7 @@ export async function makeAuction(
     )
   )[0];
 
-  const fullSettings = new CreateAuctionArgs({
+  const fullSettings = new CreateAuctionArgsV2({
     ...auctionSettings,
     authority: wallet.publicKey,
     resource: vault,

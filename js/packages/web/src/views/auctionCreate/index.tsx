@@ -30,7 +30,7 @@ import {
   PriceFloor,
   PriceFloorType,
   IPartialCreateAuctionArgs,
-  MetadataKey,
+  MetadataKey, IPartialCreateAuctionArgsV2,
 } from '@oyster/common';
 import { Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { MintLayout } from '@solana/spl-token';
@@ -118,6 +118,8 @@ export interface AuctionState {
   tiers?: Array<Tier>;
 
   winnersCount: number;
+
+  instantSalePrice: number | null;
 }
 
 export const AuctionCreateView = () => {
@@ -150,6 +152,7 @@ export const AuctionCreateView = () => {
     winnersCount: 1,
     startSaleTS: undefined,
     startListTS: undefined,
+    instantSalePrice: null,
   });
 
   const [tieredAttributes, setTieredAttributes] = useState<TieredAuctionState>({
@@ -311,7 +314,7 @@ export const AuctionCreateView = () => {
       console.log('Tiered settings', settings);
     }
 
-    const auctionSettings: IPartialCreateAuctionArgs = {
+    const auctionSettings: IPartialCreateAuctionArgsV2 = {
       winners: winnerLimit,
       endAuctionAt: new BN((attributes.auctionDuration || 0) * (
         attributes.auctionDurationType == "days"
@@ -342,7 +345,8 @@ export const AuctionCreateView = () => {
       tickSize: attributes.priceTick
         ? new BN(attributes.priceTick * LAMPORTS_PER_SOL)
         : null,
-      instant_sale_price: attributes.instantSalePrice || null,
+      instantSalePrice: attributes.instantSalePrice,
+      name: 'bla-bla-bla-bla-bla-bla-bla-bla2',
     };
 
     const _auctionObj = await createAuctionManager(
@@ -408,6 +412,14 @@ export const AuctionCreateView = () => {
     />
   );
 
+  const instantSaleStep = (
+    <InstantSaleStep
+      attributes={attributes}
+      setAttributes={setAttributes}
+      confirm={() => gotoNextStep()}
+    />
+  );
+
   const initialStep = (
     <InitialPhaseStep
       attributes={attributes}
@@ -465,6 +477,7 @@ export const AuctionCreateView = () => {
       ['Copies', copiesStep],
       ['Sale Type', typeStep],
       ['Price', priceStep],
+      ['Instant Sale', instantSaleStep],
       ['Initial Phase', initialStep],
       ['Ending Phase', endingStep],
       ['Participation NFT', participationStep],
@@ -816,6 +829,54 @@ const PriceStep = (props: {
       ) : (
         <PriceSale {...props} />
       )}
+    </>
+  );
+};
+
+const InstantSaleStep = (props: {
+  attributes: AuctionState;
+  setAttributes: (attr: AuctionState) => void;
+  confirm: () => void;
+}) => {
+  return (
+    <>
+      <Row className="call-to-action">
+        <h2>Price</h2>
+        <p>Set the price for your auction.</p>
+      </Row>
+      <Row className="content-action">
+        <label className="action-field">
+          <span className="field-title">Sale price</span>
+          <span className="field-info">
+            This is the fix price for your auction.
+          </span>
+          <Input
+            type="number"
+            min={0}
+            autoFocus
+            className="input"
+            placeholder="Price"
+            prefix="◎"
+            suffix="SOL"
+            onChange={info =>
+              props.setAttributes({
+                ...props.attributes,
+                instantSalePrice: parseFloat(info.target.value) || null,
+              })
+            }
+          />
+        </label>
+      </Row>
+      <Row>
+        <Button
+          type="primary"
+          size="large"
+          onClick={props.confirm}
+          className="action-btn"
+        >
+          Continue
+        </Button>
+      </Row>
     </>
   );
 };

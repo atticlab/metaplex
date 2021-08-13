@@ -23,6 +23,7 @@ import {
   findProgramAddress,
   IPartialCreateAuctionArgs,
   MetadataKey,
+  IPartialCreateAuctionArgsV2,
 } from '@oyster/common';
 
 import { AccountLayout, Token } from '@solana/spl-token';
@@ -98,7 +99,7 @@ export async function createAuctionManager(
     ParsedAccount<WhitelistedCreator>
   >,
   settings: AuctionManagerSettings,
-  auctionSettings: IPartialCreateAuctionArgs,
+  auctionSettings: IPartialCreateAuctionArgsV2,
   safetyDepositDrafts: SafetyDepositDraft[],
   participationSafetyDepositDraft: SafetyDepositDraft | undefined,
   paymentMint: PublicKey,
