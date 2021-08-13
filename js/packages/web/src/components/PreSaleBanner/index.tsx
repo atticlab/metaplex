@@ -32,30 +32,33 @@ export const PreSaleBanner = ({ auction }: IPreSaleBanner) => {
       <Col md={12} className="presale-info">
         <h2 className="art-title">{art.title}</h2>
         {auction && (
-          <AuctionCard
-            auctionView={auction}
-            style={{
-              background: 'transparent',
-              width: '100%',
-              padding: 0,
-              margin: 0,
-            }}
-            hideDefaultAction={true}
-            action={
-              <>
-                <Link to={`/auction/${auction.auction.pubkey.toBase58()}`}>
-                  <Button
-                    type="primary"
-                    size="large"
-                    className="action-btn"
-                    style={{ maxWidth: 290 }}
-                  >
-                    Go to auction
-                  </Button>
-                </Link>
-              </>
-            }
-          />
+          <div className={'auction-container'}>
+            <AuctionCard
+              auctionView={auction}
+              style={{
+                background: 'transparent',
+                width: '100%',
+                padding: 0,
+                margin: 0,
+              }}
+              hideDefaultAction={true}
+              action={
+                <>
+                  <Link to={`/auction/${auction.auction.pubkey.toBase58()}`}>
+                    <Button
+                      type="primary"
+                      size="large"
+                      className="action-btn"
+                      style={{ maxWidth: 290 }}
+                    >
+                      Go to auction
+                    </Button>
+                  </Link>
+                </>
+              }
+            />
+          </div>
+
         )}
       </Col>
     </Row>

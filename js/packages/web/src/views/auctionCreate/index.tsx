@@ -342,6 +342,7 @@ export const AuctionCreateView = () => {
       tickSize: attributes.priceTick
         ? new BN(attributes.priceTick * LAMPORTS_PER_SOL)
         : null,
+      instant_sale_price: attributes.instantSalePrice || null,
     };
 
     const _auctionObj = await createAuctionManager(

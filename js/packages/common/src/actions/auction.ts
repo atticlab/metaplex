@@ -366,6 +366,8 @@ export interface IPartialCreateAuctionArgs {
   tickSize: BN | null;
 
   gapTickSizePercentage: number | null;
+
+  instantSalePrice: number | null;
 }
 
 export class CreateAuctionArgs implements IPartialCreateAuctionArgs {
@@ -389,6 +391,8 @@ export class CreateAuctionArgs implements IPartialCreateAuctionArgs {
 
   gapTickSizePercentage: number | null;
 
+  instantSalePrice: number | null;
+
   constructor(args: {
     winners: WinnerLimit;
     endAuctionAt: BN | null;
@@ -399,6 +403,7 @@ export class CreateAuctionArgs implements IPartialCreateAuctionArgs {
     priceFloor: PriceFloor;
     tickSize: BN | null;
     gapTickSizePercentage: number | null;
+    instantSalePrice: number | null;
   }) {
     this.winners = args.winners;
     this.endAuctionAt = args.endAuctionAt;
@@ -409,6 +414,7 @@ export class CreateAuctionArgs implements IPartialCreateAuctionArgs {
     this.priceFloor = args.priceFloor;
     this.tickSize = args.tickSize;
     this.gapTickSizePercentage = args.gapTickSizePercentage;
+    this.instantSalePrice = args.instantSalePrice;
   }
 }
 
@@ -461,6 +467,7 @@ export const AUCTION_SCHEMA = new Map<any, any>([
         ['priceFloor', PriceFloor],
         ['tickSize', { kind: 'option', type: 'u64' }],
         ['gapTickSizePercentage', { kind: 'option', type: 'u8' }],
+        ['instant_sale_price', { kind: 'option', type: 'u8' }],
       ],
     },
   ],

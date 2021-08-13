@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Statistic } from 'antd';
 import { useSolPrice } from '../../contexts';
 import { formatUSD } from '@oyster/common';
+import {ReactSVG} from "react-svg";
+const SolIcon = require("../../../../../assets/sol.svg") as string;
 
 interface IAmountLabel {
   amount: number | string;
   displayUSD?: boolean;
   title?: string;
   style?: object;
+  className?: string;
   containerStyle?: object;
 }
 
@@ -18,6 +21,7 @@ export const AmountLabel = (props: IAmountLabel) => {
     title = '',
     style = {},
     containerStyle = {},
+    className = '',
   } = props;
   const amount = typeof _amount === 'string' ? parseFloat(_amount) : _amount;
 
@@ -32,14 +36,15 @@ export const AmountLabel = (props: IAmountLabel) => {
   const PriceNaN = isNaN(amount);
 
   return (
-    <div style={{ display: 'flex', ...containerStyle }}>
+    <div className={'amount-label ' + className} style={{ display: 'flex', ...containerStyle }}>
+      <ReactSVG src={"../../../../../assets/sol.svg"} />
       {PriceNaN === false && (
         <Statistic
           style={style}
           className="create-statistic"
           title={title || ''}
           value={amount}
-          prefix="◎"
+          suffix={'SOL'}
         />
       )}
       {displayUSD && (
