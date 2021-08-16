@@ -22,6 +22,7 @@ import {
   sendTransactionWithRetry,
   findProgramAddress,
   IPartialCreateAuctionArgs,
+  IPartialCreateAuctionArgsV2,
   MetadataKey,
 } from '@oyster/common';
 
@@ -98,7 +99,7 @@ export async function createAuctionManager(
     ParsedAccount<WhitelistedCreator>
   >,
   settings: AuctionManagerSettings,
-  auctionSettings: IPartialCreateAuctionArgs,
+  auctionSettings: IPartialCreateAuctionArgsV2,
   safetyDepositDrafts: SafetyDepositDraft[],
   participationSafetyDepositDraft: SafetyDepositDraft | undefined,
   paymentMint: PublicKey,

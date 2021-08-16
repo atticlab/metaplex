@@ -30,12 +30,12 @@ export const VAULT_ID = new PublicKey(
 );
 
 export const AUCTION_ID = new PublicKey(
-  'auctxRXPeJoc4817jDhf4HbjnhEcr1cCXenosMhK5R8',
+  '531a9nS7GZCrfNonjs7WkLN2qby4r4y7GrbiiAcmRd5N',
   //'6u5XVthCStUfmNrYhFsST94oKxzwEZfZFHFhiCnB2nR1',
 );
 
 export const METAPLEX_ID = new PublicKey(
-  'p1exdMJcjVao65QdewkaZRUnU6VPSXhus9n2GzWfh98',
+  'BMXJNVMrsf1vmebRVY1xvU9CnTZWWWCEgTwtQMLWBH5X',
   //'98jcGaKLKx9vv33H9edLUXAydrSipHhJGDQuPXBVPVGp',
 );
 

@@ -368,6 +368,27 @@ export interface IPartialCreateAuctionArgs {
   gapTickSizePercentage: number | null;
 }
 
+export interface IPartialCreateAuctionArgsV2 {
+  /// How many winners are allowed for this auction. See AuctionData.
+  winners: WinnerLimit;
+  /// End time is the cut-off point that the auction is forced to end by. See AuctionData.
+  endAuctionAt: BN | null;
+  /// Gap time is how much time after the previous bid where the auction ends. See AuctionData.
+  auctionGap: BN | null;
+  /// Token mint for the SPL token used for bidding.
+  tokenMint: PublicKey;
+
+  priceFloor: PriceFloor;
+
+  tickSize: BN | null;
+
+  gapTickSizePercentage: number | null;
+
+  name: string;
+
+  instantSalePrice: BN | null;
+}
+
 export class CreateAuctionArgs implements IPartialCreateAuctionArgs {
   instruction: number = 1;
   /// How many winners are allowed for this auction. See AuctionData.
@@ -409,6 +430,58 @@ export class CreateAuctionArgs implements IPartialCreateAuctionArgs {
     this.priceFloor = args.priceFloor;
     this.tickSize = args.tickSize;
     this.gapTickSizePercentage = args.gapTickSizePercentage;
+  }
+}
+
+export class CreateAuctionArgsV2 implements IPartialCreateAuctionArgsV2 {
+  instruction: number = 7;
+  /// How many winners are allowed for this auction. See AuctionData.
+  winners: WinnerLimit;
+  /// End time is the cut-off point that the auction is forced to end by. See AuctionData.
+  endAuctionAt: BN | null;
+  /// Gap time is how much time after the previous bid where the auction ends. See AuctionData.
+  auctionGap: BN | null;
+  /// Token mint for the SPL token used for bidding.
+  tokenMint: PublicKey;
+  /// Authority
+  authority: PublicKey;
+  /// The resource being auctioned. See AuctionData.
+  resource: PublicKey;
+
+  priceFloor: PriceFloor;
+
+  tickSize: BN | null;
+
+  gapTickSizePercentage: number | null;
+
+  name: string;
+
+  instantSalePrice: BN | null;
+
+  constructor(args: {
+    winners: WinnerLimit;
+    endAuctionAt: BN | null;
+    auctionGap: BN | null;
+    tokenMint: PublicKey;
+    authority: PublicKey;
+    resource: PublicKey;
+    priceFloor: PriceFloor;
+    tickSize: BN | null;
+    gapTickSizePercentage: number | null;
+    name: string;
+    instantSalePrice: BN | null;
+  }) {
+    this.winners = args.winners;
+    this.endAuctionAt = args.endAuctionAt;
+    this.auctionGap = args.auctionGap;
+    this.tokenMint = args.tokenMint;
+    this.authority = args.authority;
+    this.resource = args.resource;
+    this.priceFloor = args.priceFloor;
+    this.tickSize = args.tickSize;
+    this.gapTickSizePercentage = args.gapTickSizePercentage;
+    this.name = args.name;
+    this.instantSalePrice = args.instantSalePrice;
   }
 }
 
@@ -461,6 +534,26 @@ export const AUCTION_SCHEMA = new Map<any, any>([
         ['priceFloor', PriceFloor],
         ['tickSize', { kind: 'option', type: 'u64' }],
         ['gapTickSizePercentage', { kind: 'option', type: 'u8' }],
+      ],
+    },
+  ],
+  [
+    CreateAuctionArgsV2,
+    {
+      kind: 'struct',
+      fields: [
+        ['instruction', 'u8'],
+        ['winners', WinnerLimit],
+        ['endAuctionAt', { kind: 'option', type: 'u64' }],
+        ['auctionGap', { kind: 'option', type: 'u64' }],
+        ['tokenMint', 'pubkey'],
+        ['authority', 'pubkey'],
+        ['resource', 'pubkey'],
+        ['priceFloor', PriceFloor],
+        ['tickSize', { kind: 'option', type: 'u64' }],
+        ['gapTickSizePercentage', { kind: 'option', type: 'u8' }],
+        ['name', [32]],
+        ['instantSalePrice', { kind: 'option', type: 'u64' }],
       ],
     },
   ],
@@ -538,6 +631,8 @@ export const AUCTION_SCHEMA = new Map<any, any>([
         ['totalUncancelledBids', 'u64'],
         ['tickSize', { kind: 'option', type: 'u64' }],
         ['gapTickSizePercentage', { kind: 'option', type: 'u8' }],
+        ['instantSalePrice', { kind: 'option', type: 'u64' }],
+        ['name', { kind: 'option', type: [32] }],
       ],
     },
   ],
@@ -608,7 +703,7 @@ export const decodeAuctionData = (buffer: Buffer) => {
 };
 
 export async function createAuction(
-  settings: CreateAuctionArgs,
+  settings: CreateAuctionArgsV2,
   creator: PublicKey,
   instructions: TransactionInstruction[],
 ) {

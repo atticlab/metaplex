@@ -30,6 +30,7 @@ import {
   PriceFloor,
   PriceFloorType,
   IPartialCreateAuctionArgs,
+  IPartialCreateAuctionArgsV2,
   MetadataKey,
 } from '@oyster/common';
 import { Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
@@ -311,7 +312,7 @@ export const AuctionCreateView = () => {
       console.log('Tiered settings', settings);
     }
 
-    const auctionSettings: IPartialCreateAuctionArgs = {
+    const auctionSettings: IPartialCreateAuctionArgsV2 = {
       winners: winnerLimit,
       endAuctionAt: new BN((attributes.auctionDuration || 0) * (
         attributes.auctionDurationType == "days"
@@ -342,6 +343,8 @@ export const AuctionCreateView = () => {
       tickSize: attributes.priceTick
         ? new BN(attributes.priceTick * LAMPORTS_PER_SOL)
         : null,
+      name: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      instantSalePrice: new BN(5),
     };
 
     const _auctionObj = await createAuctionManager(
